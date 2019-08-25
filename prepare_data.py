@@ -25,6 +25,7 @@
 # -
 
 import pandas as pd
+import numpy as np
 
 # ## 1. Load required data and provide some basic stats
 
