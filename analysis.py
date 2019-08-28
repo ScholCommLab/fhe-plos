@@ -20,7 +20,7 @@
 #
 # Figures are plotted to the *figures/* directory.
 #
-# In order to re-produce the plots without interacting with the notebook use `jupyter nbconvert --execute analysis.ipynb`
+# In order to re-produce the plots without interacting with the notebook use `python analysis.py`
 #
 # **Outline**
 #
@@ -131,7 +131,6 @@ cp10 = sns.color_palette(cm, 10)
 
 # +
 articles_csv = "data/articles.csv"
-responses_csv = "data/responses.csv"
 
 figs = "figures/"
 tables = "tables/"
@@ -139,14 +138,10 @@ tables = "tables/"
 push_to_gspread = False
 save_tables = True
 save_figs = True
+# -
 
-# +
 # Load data
 articles = pd.read_csv(articles_csv, index_col="doi", parse_dates=['publication_date'])
-responses = pd.read_csv(responses_csv, index_col="id", parse_dates=['received_at', 'og_updated_time', 'publication_date', 'added_on'])
-
-# Add year column to responses
-responses = responses.merge(articles[['year']], left_on="doi", right_index=True, how="left")
 
 # +
 # A few useful sets to index various slices of the articles
@@ -166,7 +161,7 @@ any_engagement = aes_set.union(aer_set).union(aec_set)
 metrics = ['AES', 'POS', 'TW']
 
 # + {"toc-hr-collapsed": false, "cell_type": "markdown"}
-# # Outputs
+# # Results
 # -
 
 # ## Table 3
@@ -200,7 +195,7 @@ df_cross_metrics
 # +
 pdf = articles
 
-total = len(am_shares.union(aes_set).union(tw_set))
+total = len(pos_set.union(aes_set).union(tw_set))
 
 v = venn3([tw_set, am_shares, aes_set],
       set_labels=('', '', ''),
@@ -638,6 +633,9 @@ plt.xlabel("")
 plt.grid(False)
 plt.grid(True, axis="x", linestyle=":")
 sns.despine(top=True, bottom=True, left=True, right=True)
+
+if save_figs:
+    plt.savefig(figs + "figure_.png", bbox_inches="tight")
 
 # +
 pdf = df.dropna()

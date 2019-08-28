@@ -40,7 +40,6 @@ am_metrics_csv = "data/input/altmetric_counts.csv"
 
 # Output data
 out_articles_csv = "data/articles.csv"
-out_responses_csv = "data/responses.csv"
 
 # +
 # Load articles and extract years
@@ -124,7 +123,6 @@ ogid_counts = all_responses.groupby(["doi", "og_id"]).size().groupby(['og_id']).
 bad_ogids = ogid_counts[ogid_counts>1].keys()
 bad_dois = all_responses[all_responses.og_id.isin(bad_ogids)].doi
 
-responses = all_responses[~all_responses.doi.isin(bad_dois)]
 articles = all_articles.drop(bad_dois, axis=0)
 metrics = all_metrics.drop(bad_dois, axis=0)
 
@@ -228,10 +226,9 @@ df
 articles = x.drop(columns="title_")
 articles.index.name = "doi"
 
-# ## 5. Write output files used in analysis notebook
+# ## 5. Write output used in analysis notebook
 
 articles.to_csv(out_articles_csv)
-responses.to_csv(out_responses_csv)
 
 # + {"toc-hr-collapsed": false, "cell_type": "markdown"}
 # # References
