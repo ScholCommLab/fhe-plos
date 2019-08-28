@@ -40,7 +40,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from gspread_dataframe import get_as_dataframe, set_with_dataframe
+from gspread_dataframe import set_with_dataframe
 from matplotlib import ticker
 from matplotlib.colors import ListedColormap
 from matplotlib_venn import venn2, venn3, venn3_circles
@@ -52,8 +52,11 @@ from tqdm.auto import tqdm
 tqdm.pandas()
 
 
+# -
+
+# The following presents an implementation of _partial log binning_ following Milojević (2010)
+
 # +
-# Implementation of partial log binning following Milojević (2010)
 def thresh(bin_size):
     x = 1
     while True:
@@ -95,18 +98,21 @@ def partial_log_binning(data_counts, bin_size=0.1):
 
 # -
 
-# # Configuration
+# # Initialization
+
+# ## Configuration
 
 # +
+# Seaborn styles
+sns.set_style("whitegrid")
+
+# Matplotlib figure configuration fonts and figsizes
 plt.rcParams.update({
     'font.family':'sans-serif',
     'font.size': 16.0,
     'text.usetex': False,
     'figure.figsize': (11.69,8.27)
 })
-
-# Seaborn styles
-sns.set_style("whitegrid")
 
 # Color palette
 cm = "Paired"
@@ -118,16 +124,19 @@ cp10 = sns.color_palette(cm, 10)
 # Set up GSpread connection to push dataframes to Google Spreadsheets
 # Instructions can be found at https://gspread.readthedocs.io/en/latest/
 
-# scope = ['https://spreadsheets.google.com/feeds',
-#          'https://www.googleapis.com/auth/drive']
+push_to_gspread = False
 
-# credentials = ServiceAccountCredentials.from_json_keyfile_name('My Project-d9fa71152fe8.json', scope)
+if push_to_gspread:
+    scope = ['https://spreadsheets.google.com/feeds',
+             'https://www.googleapis.com/auth/drive']
 
-# gc = gspread.authorize(credentials)
-# sh =  gc.open("PLOS Paper - Tables")
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('My Project-d9fa71152fe8.json', scope)
+
+    gc = gspread.authorize(credentials)
+    sh =  gc.open("PLOS Paper - Tables")
 # -
 
-# # Initialization
+# ## Load data
 
 # +
 articles_csv = "data/articles.csv"
@@ -135,13 +144,16 @@ articles_csv = "data/articles.csv"
 figs = "figures/"
 tables = "tables/"
 
-push_to_gspread = False
 save_tables = True
 save_figs = True
 # -
 
 # Load data
 articles = pd.read_csv(articles_csv, index_col="doi", parse_dates=['publication_date'])
+
+# ## Helpers
+#
+# A few variables to quickly access slices/sets of the dataset
 
 # +
 # A few useful sets to index various slices of the articles
@@ -157,7 +169,7 @@ both_shares = pos_set.intersection(aes_set)
 any_engagement = aes_set.union(aer_set).union(aec_set)
 # -
 
-# variable to quickly index three main metrics
+# three main metrics
 metrics = ['AES', 'POS', 'TW']
 
 # + {"toc-hr-collapsed": false, "cell_type": "markdown"}
@@ -197,7 +209,7 @@ pdf = articles
 
 total = len(pos_set.union(aes_set).union(tw_set))
 
-v = venn3([tw_set, am_shares, aes_set],
+v = venn3([tw_set, pos_set, aes_set],
       set_labels=('', '', ''),
       subset_label_formatter=lambda x: "{:,} ({:.1f})".format(x, 100*x/total));
 
@@ -260,7 +272,7 @@ articles['diff'] = articles['AES'] - articles['POS']
 
 # Remove articles in Arts and Humanities
 base = articles[~articles.discipline.isin(["Arts", "Humanities"])]
-print("Removed {} articles in Arts or Humanities".format(articles[articles.discipline.isin(["Arts", "Humanities"])].shape[0]))
+"Removed {} articles in Arts or Humanities".format(articles[articles.discipline.isin(["Arts", "Humanities"])].shape[0])
 
 # +
 # Disciplinary analysis is based on the "discipline" column
@@ -341,7 +353,7 @@ cov_disc_formatted
 # +
 a = aes_set.difference(pos_set)
 b = aes_set.intersection(pos_set)
-c = am_shares.difference(aes_set)
+c = pos_set.difference(aes_set)
 
 any_fb_counts = base.reindex(aes_set.union(pos_set))[col].value_counts()
 any_fb_counts.loc['Total'] = any_fb_counts.sum()
@@ -374,13 +386,13 @@ if save_figs:
 
 pdf
 
-any_fb_counts = base.reindex(aes_set.union(am_shares))[col].value_counts()
+any_fb_counts = base.reindex(aes_set.union(pos_set))[col].value_counts()
 any_fb_counts.loc['Total'] = any_fb_counts.sum()
 
 # +
-a = aes_set.difference(am_shares)
-b = aes_set.intersection(am_shares)
-c = am_shares.difference(aes_set)
+a = aes_set.difference(pos_set)
+b = aes_set.intersection(pos_set)
+c = pos_set.difference(aes_set)
 
 indices = [a, b, c]
 
@@ -539,6 +551,9 @@ plt.ylabel("Expected articles with engagement count")
 plt.xlabel("Engagement counts")
 
 sns.despine(bottom=True, top=True, left=True, right=True, ax=ax)
+
+if save_figs:
+    plt.savefig(figs + "figure_5_count_distributions.png", bbox_inches="tight")
 # -
 
 print("AES > POS: {}".format(sum(articles['diff']>0)))
@@ -558,11 +573,8 @@ pdf.Metrics.replace(False, "POS > AES", inplace=True)
 
 pdf["diff"] = pdf["diff"].abs()
 
-# sns.stripplot(x="year", y="diff", hue="metrics", dodge=True, data=pdf, palette=cm,
-#              alpha=.4, edgecolor="black", linewidth=.3, size=3, jitter=True)
-
-sns.boxenplot(x="year", y="diff", hue="Metrics", dodge=True, data=pdf, palette=cm,
-             saturation=1)
+plt.figure()
+sns.boxenplot(x="year", y="diff", hue="Metrics", dodge=True, data=pdf, palette=cm, saturation=1)
 
 medians = pdf.groupby(['year', 'Metrics'])['diff'].median().tolist()
 nobs = pdf.groupby(['year', 'Metrics'])['diff'].count().tolist()
@@ -585,6 +597,9 @@ plt.grid(axis="y", linestyle=":")
 plt.grid(False, axis="x")
 
 sns.despine(left=True, right=True, top=True)
+
+if save_figs:
+    plt.savefig(figs + "figure_6_letter_value_plot_count_difference.png", bbox_inches="tight")
 # -
 
 # ## Figure 7
@@ -635,7 +650,27 @@ plt.grid(True, axis="x", linestyle=":")
 sns.despine(top=True, bottom=True, left=True, right=True)
 
 if save_figs:
-    plt.savefig(figs + "figure_.png", bbox_inches="tight")
+    plt.savefig(figs + "figure_7_AES_POS_comparison_disciplines.png", bbox_inches="tight")
+# -
+
+# ## Supplemental material
+
+# +
+pdf = articles[metrics+["year"]]
+pdf = pdf.melt(value_vars=metrics, value_name="Engagement count", id_vars="year", var_name="Metrics")
+
+plt.figure()
+sns.boxenplot(x="year", y="Engagement count", hue="Metrics", data=pdf, palette=cm)
+
+plt.yscale("log")
+
+yticks = [1,2,3,5,10,100,1000,10000]
+plt.yticks(yticks, ["{:,}".format(_) for _ in yticks]);
+plt.xlabel("")
+sns.despine(top=True, bottom=True, left=True, right=True)
+
+if save_figs:
+    plt.savefig(figs + "supplemental_fig_8_metrics_over_years.png", bbox_inches="tight")
 
 # +
 pdf = df.dropna()
@@ -671,10 +706,8 @@ plt.grid(False, axis="y")
 sns.despine(left=True, right=True, bottom=True, top=True)
 
 if save_figs:
-    plt.savefig(figs + "supplemental_B_letter_value_AES_POS_diff.png", bbox_inches="tight")
+    plt.savefig(figs + "supplemental_fig_9_letter_value_AES_POS_diff.png", bbox_inches="tight")
 # -
-
-# # Dump
 
 # # References
 #
