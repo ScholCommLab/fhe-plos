@@ -1,6 +1,12 @@
+![fhe](fhe.png)
+
 # Reproduction code for: How much research shared on Facebook is hidden from public view?
 
-This repository contains all figures and tables present in the article. Furthermore, all the input data and code are provided to reproduce the results.
+> A comparison of public and private online activity around PLOS ONE papers
+
+This repository contains all figures and tables present in the manuscript for "How much research shared on Facebook is hidden from public view?".
+
+Furthermore, all the input data and code required to reproduce results are provided with instructions.
 
 | Resource | Link |
 |-|-|
@@ -9,16 +15,13 @@ This repository contains all figures and tables present in the article. Furtherm
 | Code | [GitHub](https://github.com/ScholCommLab/fhe-plos-paper)|
 | Data | [Dataverse](https://dataverse.harvard.edu/privateurl.xhtml?token=58246dfc-bdf8-454d-8edc-60d5918dedfc) |
 
+This article is part of a broader investigation of the hidden engagement on Facebook. More information about the project can be found [here](https://github.com/ScholCommLab/facebook-hidden-engagement).
 
 ## Instructions
 
+All scripts have been written with Python 3.x. To explore results interactively a working instance of Jupyter Notebooks/Labs is required.
 
-
-### Requirements
-
-To reproduce results Python 3.5 is required. To explore results interactively Jupyter Notebook is also required.
-
-Packages specified in `requirements.txt` need to be installed via
+Packages specified in `requirements.txt` can be installed via
 
 ```pip install -r requirements.txt```
 
@@ -52,5 +55,3 @@ Packages specified in `requirements.txt` need to be installed via
     ```python analysis.py```
 
     Optionally, you can also open the analysis notebook with Jupyter to explore the dataset.
-
-## 
