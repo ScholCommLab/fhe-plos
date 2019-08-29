@@ -71,7 +71,7 @@ all_metrics.rename(columns=col_names, inplace=True)
 
 # +
 # Load disciplines
-disciplines = pd.read_csv(disciplines_csv, delimiter=";", index_col="DOI")
+disciplines = pd.read_csv(disciplines_csv, index_col="DOI")
 disciplines.index = disciplines.index.map(lambda x: str(x)[4:])
 
 # Rename columns
