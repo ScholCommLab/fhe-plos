@@ -30,7 +30,7 @@ Furthermore, all the input data and code required to reproduce results are provi
 
 ## Inital Data Collection
 
-The data used in this paper was collected using our own methods. The data collection method is described in [Enkhbayar and Alperin (2018)(https://arxiv.org/abs/1809.01194)]. Code & instructions can be found [here](https://github.com/ScholCommLab/fhe-plos).
+The data used in this paper was collected using our own methods. The data collection method is described in [Enkhbayar and Alperin (2018)](https://arxiv.org/abs/1809.01194). Code & instructions can be found [here](https://github.com/ScholCommLab/fhe-plos).
 
 ## Reproduce results
 
