@@ -2,6 +2,14 @@
 
 This repository contains all figures and tables present in the article. Furthermore, all the input data and code are provided to reproduce the results.
 
+| Resource | Link |
+|-|-|
+| Preprint | TBD |
+| Article | TBD |
+| Code | [GitHub](https://github.com/ScholCommLab/fhe-plos-paper)|
+| Data | [Dataverse](https://dataverse.harvard.edu/privateurl.xhtml?token=58246dfc-bdf8-454d-8edc-60d5918dedfc) |
+
+
 ## Instructions
 
 
@@ -45,11 +53,4 @@ Packages specified in `requirements.txt` need to be installed via
 
     Optionally, you can also open the analysis notebook with Jupyter to explore the dataset.
 
-## Other links and resources
-
-| Resource | Link |
-|-|-|
-| Preprint | TBA |
-| Article | TBA |
-| Code | [GitHub Repository](https://github.com/ScholCommLab/fhe-plos-paper)|
-| Data | [Dataverse]() |
+## 
