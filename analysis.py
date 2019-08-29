@@ -19,20 +19,36 @@
 # This notebook produces all results and figures in the article.
 #
 # Figures are plotted to the *figures/* directory.
+# Tables are saved to the *tables/* directory.
 #
-# In order to re-produce the plots without interacting with the notebook use `python analysis.py`
+# **Article outline and outputs**
 #
-# **Outline**
-#
-# 1. Coverage
-#     1. Comparison of AES, POS, and TW
-#     2. Facebook coverage in detail
-#     3. Coverage by disciplines
-#         1. Disciplinary breakdown of Facebook methods
-# 2. Engagement Counts
-#     1. Comparison of AES, POS, and TW
-#     2. Facebook counts in detail
-#     3. Facebook counts by discipline
+# 1. Introduction
+# 2. Background
+#     - Figure 1 (static)
+#     - Table 1 (static)
+# 3. Methodology
+#     - Table 2 (static)
+# 4. Results
+#     1. Coverage
+#         - [Table 3](#Table-3)
+#         - [Figure 2](#Figure-2)
+#         - [Table 4](#Table-4)
+#         - [Figure 3](#Figure-3)
+#         - [Figure 4](#Figure-4)
+#     2. Engagement counts
+#         - [Table 5](#Table-5)
+#         - [Table 6](#Table-6)
+#         - [Figure 5](#Figure-5)
+#         - [Figure 6](#Figure-6)
+#         - [Figure 7](#Figure-7)
+# 5. Discussion and Conclusion
+# 6. Appendices
+#     - [Table A1](#Table-A1)
+#     - [Table B1](#Table-B1)
+# 7. Supplemental material
+#     - [Figure 8](#Figure-8)
+#     - [Figure 9](#Figure-9) 
 
 # +
 import gspread
@@ -172,7 +188,7 @@ any_engagement = aes_set.union(aer_set).union(aec_set)
 # three main metrics
 metrics = ['AES', 'POS', 'TW']
 
-# + {"toc-hr-collapsed": false, "cell_type": "markdown"}
+# + {"cell_type": "markdown", "toc-hr-collapsed": false}
 # # Results
 # -
 
@@ -316,38 +332,6 @@ if save_figs:
     plt.savefig(figs + "figure_3_coverage_disciplines.png", bbox_inches="tight")
 # -
 
-# ## Appendix A
-
-# +
-# Format + Percentages
-cov_disc_formatted = cov_disciplines.copy()
-cov_disc_formatted.columns = [
-    "AES (coverage)",
-    "POS (coverage)",
-    "TW (coverage)",
-    "All articles (percentage)"]
-
-cov_disc_formatted.loc['Total'] = cov_disc_formatted.sum()
-
-cols = cov_disc_formatted.columns[0:3]
-for i in cov_disc_formatted.index:
-    cov_disc_formatted.loc[i, cols] = cov_disc_formatted.loc[i, cols].map(
-        lambda x: "{:,} ({:.1f}%)".format(x, 100*x/cov_disc_formatted.loc[i, "All articles (percentage)"]))
-
-t = cov_disc_formatted["All articles (percentage)"][:-1].sum()
-cov_disc_formatted["All articles (percentage)"] = cov_disc_formatted["All articles (percentage)"].map(
-    lambda x: "{:,} ({:.1f}%)".format(x, 100*x/t))
-    
-if push_to_gspread:
-    wks = sh.worksheet("Disciplines - Coverage")
-    set_with_dataframe(wks, cov_disc_formatted.reset_index())
-
-if save_tables:
-    cov_disc_formatted.to_csv(tables + "appendix_A_coverage_disciplines.csv")
-    
-cov_disc_formatted
-# -
-
 # ## Figure 4
 
 # +
@@ -385,44 +369,6 @@ if save_figs:
 # -
 
 pdf
-
-any_fb_counts = base.reindex(aes_set.union(pos_set))[col].value_counts()
-any_fb_counts.loc['Total'] = any_fb_counts.sum()
-
-# +
-a = aes_set.difference(pos_set)
-b = aes_set.intersection(pos_set)
-c = pos_set.difference(aes_set)
-
-indices = [a, b, c]
-
-dfs = []
-for ix, label in enumerate(["Only AES", "Both", "Only POS"]):
-    x = base.reindex(indices[ix])[col].value_counts()
-    dfs.append(x.to_frame(label))
-
-pdf = pd.concat(dfs, axis=1, sort=False)
-pdf.loc['Total'] = pdf.sum()
-
-pdf['Any FB'] = pdf.sum(axis=1)
-pdf['Public/Private (%)'] = np.round((pdf['Only POS'] + pdf['Both']) / (pdf['Only AES'] + pdf['Both']) * 100, 1)
-pdf['POS/AES (%)'] = np.round(pdf['Only POS'] / (pdf['Only AES']) * 100, 1)
-
-cols = pdf.columns[0:3]
-for i in pdf.index:
-    pdf.loc[i, cols] = pdf.loc[i, cols].map(
-        lambda x: "{:,} ({:.1f}%)".format(x, 100*x/any_fb_counts[i]))
-
-pdf.index.name = "Discipline"
-
-if push_to_gspread:
-    wks = sh.worksheet("Disciplines - FB")
-    set_with_dataframe(wks, pdf[["Any FB", "Only AES", "Both", "Only POS"]].reset_index())
-
-if save_tables:
-    pdf[["Any FB", "Only AES", "Both", "Only POS"]].to_csv(tables + "appendix_B_coverage_facebook_methods.csv")
-    
-pdf[["Any FB", "Only AES", "Both", "Only POS"]]
 
 # +
 binns = {}
@@ -653,7 +599,77 @@ if save_figs:
     plt.savefig(figs + "figure_7_AES_POS_comparison_disciplines.png", bbox_inches="tight")
 # -
 
-# ## Supplemental material
+# ## Table A1
+
+# +
+# Format + Percentages
+cov_disc_formatted = cov_disciplines.copy()
+cov_disc_formatted.columns = [
+    "AES (coverage)",
+    "POS (coverage)",
+    "TW (coverage)",
+    "All articles (percentage)"]
+
+cov_disc_formatted.loc['Total'] = cov_disc_formatted.sum()
+
+cols = cov_disc_formatted.columns[0:3]
+for i in cov_disc_formatted.index:
+    cov_disc_formatted.loc[i, cols] = cov_disc_formatted.loc[i, cols].map(
+        lambda x: "{:,} ({:.1f}%)".format(x, 100*x/cov_disc_formatted.loc[i, "All articles (percentage)"]))
+
+t = cov_disc_formatted["All articles (percentage)"][:-1].sum()
+cov_disc_formatted["All articles (percentage)"] = cov_disc_formatted["All articles (percentage)"].map(
+    lambda x: "{:,} ({:.1f}%)".format(x, 100*x/t))
+    
+if push_to_gspread:
+    wks = sh.worksheet("Disciplines - Coverage")
+    set_with_dataframe(wks, cov_disc_formatted.reset_index())
+
+if save_tables:
+    cov_disc_formatted.to_csv(tables + "table_A1_coverage_disciplines.csv")
+    
+cov_disc_formatted
+# -
+
+# ## Table B1
+
+# +
+a = aes_set.difference(pos_set)
+b = aes_set.intersection(pos_set)
+c = pos_set.difference(aes_set)
+
+indices = [a, b, c]
+
+dfs = []
+for ix, label in enumerate(["Only AES", "Both", "Only POS"]):
+    x = base.reindex(indices[ix])[col].value_counts()
+    dfs.append(x.to_frame(label))
+
+pdf = pd.concat(dfs, axis=1, sort=False)
+pdf.loc['Total'] = pdf.sum()
+
+pdf['Any FB'] = pdf.sum(axis=1)
+pdf['Public/Private (%)'] = np.round((pdf['Only POS'] + pdf['Both']) / (pdf['Only AES'] + pdf['Both']) * 100, 1)
+pdf['POS/AES (%)'] = np.round(pdf['Only POS'] / (pdf['Only AES']) * 100, 1)
+
+cols = pdf.columns[0:3]
+for i in pdf.index:
+    pdf.loc[i, cols] = pdf.loc[i, cols].map(
+        lambda x: "{:,} ({:.1f}%)".format(x, 100*x/any_fb_counts[i]))
+
+pdf.index.name = "Discipline"
+
+if push_to_gspread:
+    wks = sh.worksheet("Disciplines - FB")
+    set_with_dataframe(wks, pdf[["Any FB", "Only AES", "Both", "Only POS"]].reset_index())
+
+if save_tables:
+    pdf[["Any FB", "Only AES", "Both", "Only POS"]].to_csv(tables + "table_B1_coverage_facebook_methods.csv")
+    
+pdf[["Any FB", "Only AES", "Both", "Only POS"]]
+# -
+
+# ## Figure 8
 
 # +
 pdf = articles[metrics+["year"]]
@@ -671,6 +687,9 @@ sns.despine(top=True, bottom=True, left=True, right=True)
 
 if save_figs:
     plt.savefig(figs + "supplemental_fig_8_metrics_over_years.png", bbox_inches="tight")
+# -
+
+# ## Figure 9
 
 # +
 pdf = df.dropna()
