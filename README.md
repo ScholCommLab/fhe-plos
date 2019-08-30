@@ -13,6 +13,8 @@
 | Code | [GitHub](https://github.com/ScholCommLab/fhe-plos)|
 | Data | [Dataverse](https://dataverse.harvard.edu/privateurl.xhtml?token=58246dfc-bdf8-454d-8edc-60d5918dedfc) |
 
+This repository is part of a broader investigation of the hidden engagement on Facebook. More information about the project can be found [here](https://github.com/ScholCommLab/facebook-hidden-engagement).
+
 ---
 
 This repository contains all figures and tables present in the manuscript for "How much research shared on Facebook is hidden from public view?". Output files can be found in:
@@ -26,11 +28,9 @@ Furthermore, all the input data and code required to reproduce results are provi
 - `prepare_data.py` - data preprocessing
 - `analysis.py` - data analysis and outputs
 
-This article is part of a broader investigation of the hidden engagement on Facebook. More information about the project can be found [here](https://github.com/ScholCommLab/facebook-hidden-engagement).
-
 ## Inital Data Collection
 
-The data used in this paper was collected using our own methods. The data collection method is described in [Enkhbayar and Alperin (2018)(https://arxiv.org/abs/1809.01194)]. Code & instructions can be found [here](https://github.com/ScholCommLab/fhe-plos).
+The data used in this paper was collected using our own methods. The data collection method is described in [Enkhbayar and Alperin (2018)](https://arxiv.org/abs/1809.01194). Code & instructions can be found [here](https://github.com/ScholCommLab/fhe-plos).
 
 ## Reproduce results
 
