@@ -31,15 +31,16 @@ import numpy as np
 
 # +
 # Input data
-disciplines_csv = "data/external/PLOS_2015-2017_idArt-DOI-PY-Journal-Title-LargerDiscipline-Discipline-Specialty.csv"
+data_dir = "../data/"
+disciplines_csv = data_dir + "external/PLOS_2015-2017_idArt-DOI-PY-Journal-Title-LargerDiscipline-Discipline-Specialty.csv"
 
-in_articles_csv = "data/input/plos_one_articles.csv"
-details_csv = "data/input/query_details.csv"
-fb_metrics_csv = "data/input/graph_api_counts.csv"
-am_metrics_csv = "data/input/altmetric_counts.csv"
+in_articles_csv = data_dir + "input/plos_one_articles.csv"
+details_csv = data_dir + "input/query_details.csv"
+fb_metrics_csv = data_dir + "input/graph_api_counts.csv"
+am_metrics_csv = data_dir + "input/altmetric_counts.csv"
 
 # Output data
-out_articles_csv = "data/articles.csv"
+out_articles_csv = data_dir + "articles.csv"
 
 # +
 # Load articles and extract years

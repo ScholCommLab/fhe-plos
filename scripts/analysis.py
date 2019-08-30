@@ -155,10 +155,10 @@ if push_to_gspread:
 # ## Load data
 
 # +
-articles_csv = "data/articles.csv"
+articles_csv = "../data/articles.csv"
 
-figs = "figures/"
-tables = "tables/"
+figs = "../figures/"
+tables = "../tables/"
 
 save_tables = True
 save_figs = True
