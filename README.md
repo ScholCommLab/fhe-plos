@@ -10,7 +10,7 @@
 |-|-|
 | Preprint | TBD |
 | Article | TBD |
-| Code | [GitHub (doi:10.5281/zenodo.3381821)](https://doi.org/10.5281/zenodo.3381821)|
+| Code | [Zenodo (doi:10.5281/zenodo.3381821)](https://doi.org/10.5281/zenodo.3381821)|
 | Data | [Dataverse (doi:10.7910/DVN/3CS5ES)](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/3CS5ES)|
 
 ---
