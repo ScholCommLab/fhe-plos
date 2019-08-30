@@ -1,4 +1,4 @@
-![fhe](fhe.png)
+![logo](logo.png)
 
 # Reproduction code for: How much research shared on Facebook is hidden from public view?
 
