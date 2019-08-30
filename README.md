@@ -13,8 +13,6 @@
 | Code | [GitHub](https://github.com/ScholCommLab/fhe-plos)|
 | Data | [Dataverse](https://dataverse.harvard.edu/privateurl.xhtml?token=58246dfc-bdf8-454d-8edc-60d5918dedfc) |
 
-This repository is part of a broader investigation of the hidden engagement on Facebook. More information about the project can be found [here](https://github.com/ScholCommLab/facebook-hidden-engagement).
-
 ---
 
 This repository contains all figures and tables present in the manuscript for "How much research shared on Facebook is hidden from public view?". Output files can be found in:
@@ -28,9 +26,11 @@ Furthermore, all the input data and code required to reproduce results are provi
 - `prepare_data.py` - data preprocessing
 - `analysis.py` - data analysis and outputs
 
-## Inital Data Collection
+This article is part of a broader investigation of the hidden engagement on Facebook. More information about the project can be found [here](https://github.com/ScholCommLab/facebook-hidden-engagement).
 
-The data used in this paper was collected using our own methods. The data collection method is described in [Enkhbayar and Alperin (2018)](https://arxiv.org/abs/1809.01194). Code & instructions can be found [here](https://github.com/ScholCommLab/fhe-plos).
+## Initial Data Collection
+
+The data used in this paper was collected using our own methods. The data collection method is described in [Enkhbayar and Alperin (2018)(https://arxiv.org/abs/1809.01194)]. Code & instructions can be found [here](https://github.com/ScholCommLab/fhe-plos).
 
 ## Reproduce results
 
@@ -40,24 +40,27 @@ Packages specified in `requirements.txt` can be installed via
 
 ```pip install -r requirements.txt```
 
-1. Clone this repository and cd into it
+1. Clone this repository and cd into the scripts folder
 
     ```
     git clone git@github.com:ScholCommLab/fhe-plos-paper.git
-    cd fhe-plos-paper
+    cd fhe-plos-paper/scripts
     ```
 
 2. Download data from Dataverse.
 
     All the data is hosted on dataverse: [Dataverse repository](https://dataverse.harvard.edu/privateurl.xhtml?token=58246dfc-bdf8-454d-8edc-60d5918dedfc)
 
-    Using the helper script provided, you can download all files into the respective locations.
+    Using the helper script provided, you can download all files into the respective locations. Make the script executable and ensure that you have `wget` installed.
 
-    ```download_data.sh```
+    ```
+    chmod +x download_data.sh
+    ./download_data.sh
+    ```
 
 3. Preprocess data
 
-    Run the preprocessing script to apply transformations on the input dataset.
+    Run the preprocessing script to apply transformations on the input dataset. This step creates the file `data/articles.csv`
 
     ```python process_data.py```
 
@@ -67,4 +70,4 @@ Packages specified in `requirements.txt` can be installed via
 
     ```python analysis.py```
 
-    Optionally, you can also open the analysis notebook with Jupyter to explore the dataset.
+    Optionally, you can also open the notebook `analysis.ipynb` with Jupyter to explore the dataset and results.
