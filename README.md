@@ -11,7 +11,7 @@
 | Preprint | TBD |
 | Article | TBD |
 | Code | [GitHub](https://github.com/ScholCommLab/fhe-plos)|
-| Data | [Dataverse](https://dataverse.harvard.edu/privateurl.xhtml?token=58246dfc-bdf8-454d-8edc-60d5918dedfc) |
+| Data | [Dataverse (doi:10.7910/DVN/3CS5ES)](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/3CS5ES)|
 
 ---
 
