@@ -49,7 +49,7 @@ Packages specified in `requirements.txt` can be installed via
 
 2. Download data from Dataverse.
 
-    All the data is hosted on dataverse: [Dataverse repository](https://dataverse.harvard.edu/privateurl.xhtml?token=58246dfc-bdf8-454d-8edc-60d5918dedfc)
+    All the data is hosted on dataverse: [Dataverse repository](https://doi.org/10.7910/DVN/3CS5ES)
 
     Using the helper script provided, you can download all files into the respective locations. Make the script executable and ensure that you have `wget` installed.
 
